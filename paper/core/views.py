@@ -4,7 +4,11 @@ from .models import Categoria, Producto
 # Create your views here.
 def home(request):
     categorias = Categoria.objects.all()
-    return render(request, 'usuario/inicio.html', {'categorias': categorias})
+    productos_destacados = Producto.objects.order_by('-id')[:8]
+    return render(request, 'usuario/inicio.html', {
+        'categorias': categorias,
+        'productos_destacados': productos_destacados
+    })
 
 def productos(request, categoria_id):
     categoria = Categoria.objects.get(id=categoria_id)
@@ -94,3 +98,14 @@ def editar_carrito(request, producto_id):
             except ValueError:
                 pass
     return redirect('carrito')
+
+def buscar(request):
+    query = request.GET.get('q', '')
+    categorias = Categoria.objects.all()
+    productos = Producto.objects.filter(nombre__icontains=query) if query else []
+    return render(request, 'usuario/productos.html', {
+        'productos': productos,
+        'categoria': None,
+        'categorias': categorias,
+        'query': query
+    })
