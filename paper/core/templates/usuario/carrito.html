@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Carrito de Compras</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Producto</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in carrito %}
+            <tr>
+                <td>{{ item.producto.nombre }}</td>
+                <td>{{ item.producto.precio }}</td>
+                <td>{{ item.cantidad }}</td>
+                <td>{{ item.total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>Total: {{ total }}</p>
+    <form method="post" action="{% url 'aplicar_descuento' %}">
+        {% csrf_token %}
+        <input type="text" name="codigo" placeholder="Ingresa tu codigo de descuento">
+        <button type="submit">Aplicar Descuento</button>
+    </form>
+</body>
+</html>

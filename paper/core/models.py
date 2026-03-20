@@ -27,3 +27,22 @@ class Producto(models.Model):
     
     def __str__(self):
         return self.nombre
+
+class Carrito(models.Model):
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.IntegerField(validators=[MinValueValidator(1)])
+    def __str__(self):
+        return f"{self.producto.nombre} x {self.cantidad}"
+
+
+class generador_codigos_descuentos(models.Model):
+    codigo = models.CharField(max_length=100, unique=True)
+    porcentaje = models.DecimalField(max_digits=5, decimal_places=2, validators=[MinValueValidator(0)])
+    def __str__(self):
+        return self.codigo
+
+class Descuento(models.Model):
+    codigo = models.CharField(max_length=100, unique=True)
+    porcentaje = models.DecimalField(max_digits=5, decimal_places=2, validators=[MinValueValidator(0)])
+    def __str__(self):
+        return self.codigo
