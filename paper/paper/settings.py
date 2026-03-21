@@ -69,7 +69,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'paper.wsgi.application'
 
-
+from django.contrib.messages import constants as message_constants
+MESSAGE_TAGS = {
+    message_constants.DEBUG: 'secondary',
+    message_constants.INFO: 'info',
+    message_constants.SUCCESS: 'success',
+    message_constants.WARNING: 'warning',
+    message_constants.ERROR: 'danger',
+}
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 

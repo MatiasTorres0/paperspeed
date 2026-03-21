@@ -45,4 +45,34 @@
         </div>
     </div>
 </div>
+{% if relacionados %}
+    <div class="container mt-5 mb-5">
+        <h5 class="fw-semibold mb-3">También te puede interesar</h5>
+        <div class="row g-3">
+            {% for rel in relacionados %}
+            <div class="col-6 col-md-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    {% if rel.imagen %}
+                    <img src="{{ rel.imagen.url }}" class="card-img-top" style="height:140px;object-fit:contain;padding:10px;background:var(--ps-surface);">
+                    {% else %}
+                    <div style="height:140px;background:var(--ps-surface);display:flex;align-items:center;justify-content:center;">
+                        <i class="bi bi-image text-muted"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <a href="{% url 'producto' rel.id %}" class="text-decoration-none fw-semibold small">{{ rel.nombre }}</a>
+                        <p class="fw-bold mt-1 mb-0">
+                            {% if rel.precio_oferta and rel.precio_oferta < rel.precio %}
+                            <span class="text-danger">${{ rel.precio_oferta }}</span>
+                            {% else %}
+                            ${{ rel.precio }}
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 {% endblock %}
