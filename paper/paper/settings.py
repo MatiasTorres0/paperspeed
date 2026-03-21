@@ -77,6 +77,7 @@ MESSAGE_TAGS = {
     message_constants.WARNING: 'warning',
     message_constants.ERROR: 'danger',
 }
+
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
