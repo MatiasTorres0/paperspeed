@@ -1,0 +1,49 @@
+{% extends 'usuario/base.html' %}
+{% block title %}Pedidos - Panel Admin{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="fw-bold mb-4">Gestión de pedidos</h2>
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Dirección</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pedido in pedidos %}
+                    <tr>
+                        <td class="fw-semibold">{{ pedido.id }}</td>
+                        <td>{{ pedido.usuario.username }}</td>
+                        <td class="text-muted small">{{ pedido.fecha|date:"d/m/Y H:i" }}</td>
+                        <td class="fw-bold">${{ pedido.total }}</td>
+                        <td class="text-muted small">{{ pedido.direccion|truncatechars:30 }}</td>
+                        <td>
+                            <form method="post" action="{% url 'admin_pedido_estado' pedido.id %}" class="d-flex gap-1 align-items-center">
+                                {% csrf_token %}
+                                <select name="estado" class="form-control form-control-sm" style="width:auto;">
+                                    {% for val, label in pedido.ESTADOS %}
+                                    <option value="{{ val }}" {% if pedido.estado == val %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-check"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6" class="text-center text-muted py-4">Sin pedidos.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

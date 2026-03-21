@@ -1,0 +1,49 @@
+{% extends 'usuario/base.html' %}
+{% block title %}Mis pedidos - PaperSpeed{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="fw-bold mb-4">Mis pedidos</h2>
+    {% if pedidos %}
+    <div class="d-flex flex-column gap-3">
+        {% for pedido in pedidos %}
+        <div class="card p-4">
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                <div>
+                    <h6 class="fw-bold mb-1">Pedido #{{ pedido.id }}</h6>
+                    <p class="text-muted small mb-0">{{ pedido.fecha|date:"d/m/Y H:i" }}</p>
+                </div>
+                <div class="text-end">
+                    <span class="badge rounded-pill
+                        {% if pedido.estado == 'entregado' %}bg-success
+                        {% elif pedido.estado == 'enviado' %}bg-primary
+                        {% elif pedido.estado == 'confirmado' %}bg-warning text-dark
+                        {% else %}bg-secondary{% endif %}">
+                        {{ pedido.get_estado_display }}
+                    </span>
+                    <p class="fw-bold mt-1 mb-0">${{ pedido.total }}</p>
+                </div>
+            </div>
+            <hr style="border-color: var(--ps-border);">
+            <div class="d-flex flex-wrap gap-2">
+                {% for detalle in pedido.detalles.all %}
+                <div class="d-flex align-items-center gap-2 p-2 rounded" style="background:var(--ps-surface);">
+                    <span class="small fw-semibold">{{ detalle.producto.nombre }}</span>
+                    <span class="badge" style="background:var(--ps-border);color:var(--ps-muted);">x{{ detalle.cantidad }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% if pedido.direccion %}
+            <p class="text-muted small mt-2 mb-0"><i class="bi bi-geo-alt me-1"></i>{{ pedido.direccion }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-bag-x" style="font-size:4rem;color:var(--ps-border);"></i>
+        <h4 class="mt-3 text-muted">No tienes pedidos todavía</h4>
+        <a href="{% url 'home' %}" class="btn btn-primary mt-3">Empezar a comprar</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

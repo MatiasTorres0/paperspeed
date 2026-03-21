@@ -40,10 +40,30 @@
         <i class="bi bi-cart3 fs-5"></i>
         {% if request.session.carrito %}
         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">
-          {{ request.session.carrito|length }}
+            {{ request.session.carrito|length }}
         </span>
         {% endif %}
       </a>
+
+      {% if request.user.is_authenticated %}
+      <div class="dropdown ms-2">
+          <button class="btn btn-outline-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown">
+              <i class="bi bi-person-fill me-1"></i>{{ request.user.username }}
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow">
+              <li><a class="dropdown-item" href="{% url 'mis_pedidos' %}"><i class="bi bi-bag me-2"></i>Mis pedidos</a></li>
+              {% if request.user.is_staff %}
+              <li><hr class="dropdown-divider" style="border-color:var(--ps-border);"></li>
+              <li><a class="dropdown-item" href="{% url 'admin_dashboard' %}"><i class="bi bi-speedometer2 me-2"></i>Panel admin</a></li>
+              {% endif %}
+              <li><hr class="dropdown-divider" style="border-color:var(--ps-border);"></li>
+              <li><a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</a></li>
+          </ul>
+      </div>
+      {% else %}
+      <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-sm ms-2">Ingresar</a>
+      <a href="{% url 'registro' %}" class="btn btn-primary btn-sm ms-1">Registrarse</a>
+      {% endif %}
     </div>
   </div>
 </nav>

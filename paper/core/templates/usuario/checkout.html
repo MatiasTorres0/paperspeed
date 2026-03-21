@@ -1,0 +1,74 @@
+{% extends 'usuario/base.html' %}
+{% block title %}Confirmar pedido - PaperSpeed{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="fw-bold mb-4">Confirmar pedido</h2>
+    {% if messages %}
+        {% for msg in messages %}
+        <div class="alert alert-danger py-2">{{ msg }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card p-4 mb-4">
+                <h5 class="fw-semibold mb-3">Dirección de entrega</h5>
+                <form method="post" id="form-checkout">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Dirección completa</label>
+                        <input type="text" name="direccion" class="form-control"
+                               placeholder="Ej: Calle Los Aromos 123, Concepción" required>
+                    </div>
+                    <p class="text-muted small mb-0">
+                        <i class="bi bi-person-fill me-1"></i>
+                        Comprando como <strong>{{ request.user.username }}</strong>
+                    </p>
+                </form>
+            </div>
+            <div class="card p-4">
+                <h5 class="fw-semibold mb-3">Productos</h5>
+                {% for item in items %}
+                <div class="d-flex align-items-center gap-3 mb-3 pb-3" style="border-bottom: 1px solid var(--ps-border);">
+                    {% if item.producto.imagen %}
+                    <img src="{{ item.producto.imagen.url }}" style="width:50px;height:50px;object-fit:contain;background:var(--ps-surface);border-radius:8px;">
+                    {% else %}
+                    <div style="width:50px;height:50px;background:var(--ps-surface);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                        <i class="bi bi-image text-muted"></i>
+                    </div>
+                    {% endif %}
+                    <div class="flex-grow-1">
+                        <p class="mb-0 fw-semibold small">{{ item.producto.nombre }}</p>
+                        <p class="mb-0 text-muted small">x{{ item.cantidad }}</p>
+                    </div>
+                    <span class="fw-bold">${{ item.subtotal }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card p-4">
+                <h5 class="fw-semibold mb-4">Resumen</h5>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Subtotal</span>
+                    <span>${{ subtotal }}</span>
+                </div>
+                {% if descuento_pct %}
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Descuento ({{ descuento_pct }}%)</span>
+                    <span class="text-success">-${{ descuento_monto }}</span>
+                </div>
+                {% endif %}
+                <hr style="border-color: var(--ps-border);">
+                <div class="d-flex justify-content-between mb-4">
+                    <span class="fw-bold">Total</span>
+                    <span class="fw-bold fs-5">${{ total }}</span>
+                </div>
+                <button type="submit" form="form-checkout" class="btn btn-success w-100 btn-lg">
+                    <i class="bi bi-check-circle me-2"></i>Confirmar pedido
+                </button>
+                <a href="{% url 'carrito' %}" class="btn btn-outline-secondary w-100 mt-2">Volver al carrito</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

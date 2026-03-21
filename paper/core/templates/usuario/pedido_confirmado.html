@@ -1,0 +1,23 @@
+{% extends 'usuario/base.html' %}
+{% block title %}Pedido confirmado - PaperSpeed{% endblock %}
+{% block content %}
+<div class="container mt-5 text-center" style="max-width: 560px;">
+    <div class="card p-5">
+        <div class="mb-4">
+            <span style="font-size: 4rem;">🎉</span>
+        </div>
+        <h2 class="fw-bold mb-2">Pedido confirmado</h2>
+        <p class="text-muted mb-4">Tu pedido <strong>#{{ pedido.id }}</strong> fue recibido correctamente.</p>
+        <div class="card p-3 mb-4 text-start" style="background:var(--ps-surface);">
+            <p class="mb-1 small text-muted">Dirección de entrega</p>
+            <p class="mb-1 fw-semibold">{{ pedido.direccion }}</p>
+            <p class="mb-0 small text-muted">Estado: <span class="badge" style="background:var(--ps-primary);">{{ pedido.get_estado_display }}</span></p>
+        </div>
+        <h4 class="fw-bold text-success mb-4">Total pagado: ${{ pedido.total }}</h4>
+        <div class="d-grid gap-2">
+            <a href="{% url 'mis_pedidos' %}" class="btn btn-primary">Ver mis pedidos</a>
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">Seguir comprando</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
